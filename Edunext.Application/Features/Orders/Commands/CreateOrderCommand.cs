@@ -1,6 +1,5 @@
+using MediatR;
+
 namespace Edunext.Application.Features.Orders.Commands;
 
-public class CreateOrderCommand
-{
-    
-}
+public record CreateOrderCommand(Guid TableId): IRequest<Guid>;
