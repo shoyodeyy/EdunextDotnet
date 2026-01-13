@@ -39,6 +39,11 @@ public class Order : BaseEntity
 
     public void Submit()
     {
+        if (Status != OrderStatus.Pending)
+        {
+            throw new InvalidOperationException("Cannot submit a pending order.");
+        } 
+        
         Status = OrderStatus.Cooking;
     }
 

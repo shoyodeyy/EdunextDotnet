@@ -2,12 +2,14 @@ using Edunext.Core.Common;
 
 namespace Edunext.Core.Entities;
 
-public class Table:BaseEntity
+public class Table : BaseEntity
 {
     public string Code { get; private set; } = default!;
-    public bool IsActive { get; private set; } =  true;
-    
-    private Table() {}
+    public bool IsActive { get; private set; } = true;
+
+    private Table()
+    {
+    }
 
     public Table(string code)
     {

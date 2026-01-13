@@ -28,6 +28,11 @@ public class OrderItem : BaseEntity
 
     public void UpdateQuantity(int quantity)
     {
+        if (quantity <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must be greater than zero.");
+        }
+        
         Quantity = quantity;
     }
 }

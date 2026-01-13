@@ -1,8 +1,9 @@
+using Edunext.Application.Abstractions.Persistence;
 using Edunext.Infrastructure.Persistence;
+using Edunext.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Pomelo.EntityFrameworkCore.MySql;
 
 namespace Edunext.Infrastructure;
 
@@ -10,11 +11,11 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureDI(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseMySql(
-                connectionString: configuration.GetConnectionString("ConnectDB") ?? "Server=localhost;Port=3306;Database=Edu;Uid=root;Pwd=your_mysql_password;",
-                ServerVersion.AutoDetect(configuration.GetConnectionString("ConnectDB") ?? "Server=localhost;Port=3306;Database=Edu;Uid=root;Pwd=your_mysql_password;")));
-        
+        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("ConnectDB")));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<ITableRepository, TableRepository>();
+        services.AddScoped<IMenuRepository, MenuRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
         return services;
     }
 }
