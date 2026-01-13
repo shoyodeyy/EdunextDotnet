@@ -1,24 +1,21 @@
-﻿
-
 using Edunext.Application.Abstractions.Persistence;
 using Edunext.Application.DTOs.Order;
-
 using MediatR;
 
-namespace Edunext.Application.Features.Orders.Queries.GetActiveOrder;
+namespace Edunext.Application.Features.Orders.Queries.GetOrderById;
 
-public class GetActiveOrderHandler : IRequestHandler<GetActiveOrderQuery, OrderDto?>
+public class GetOrderByIdHandler : IRequestHandler<GetOrderByIdQuery, OrderDto?>
 {
     private readonly IOrderRepository _orderRepo;
 
-    public GetActiveOrderHandler(IOrderRepository orderRepo)
+    public GetOrderByIdHandler(IOrderRepository orderRepo)
     {
         _orderRepo = orderRepo;
     }
 
-    public async Task<OrderDto?> Handle(GetActiveOrderQuery request, CancellationToken ct)
+    public async Task<OrderDto?> Handle(GetOrderByIdQuery request, CancellationToken ct)
     {
-        var order = await _orderRepo.GetActiveByTableAsync(request.TableId);
+        var order = await _orderRepo.GetByIdAsync(request.OrderId);
 
         if (order == null) return null;
 
@@ -40,3 +37,4 @@ public class GetActiveOrderHandler : IRequestHandler<GetActiveOrderQuery, OrderD
         };
     }
 }
+

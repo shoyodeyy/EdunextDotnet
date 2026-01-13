@@ -28,8 +28,12 @@ public class OrderRepository : IOrderRepository
         _context.Orders.Update(order);
     }
 
-    public Task<Order?> GetActiveByTableAsync(Guid tableId)
+    public async Task<Order?> GetActiveByTableAsync(Guid tableId)
     {
-        throw new NotImplementedException();
+        return await _context.Orders
+            .Include(o => o.Items)
+            .Where(o => o.TableId == tableId && o.Status != Core.Enums.OrderStatus.Paid)
+            .OrderByDescending(o => o.CreateAt)
+            .FirstOrDefaultAsync();
     }
 }
