@@ -20,4 +20,19 @@ public class Table : BaseEntity
     {
         IsActive = false;
     }
+
+    public void UpdateCode(string requestCode)
+    {
+        if (string.IsNullOrWhiteSpace(requestCode))
+        {
+            throw new ArgumentNullException("Code cannot be empty.");
+        }
+        
+        Code = requestCode;
+    }
+
+    public void Enable()
+    {
+        IsActive = true;
+    }
 }

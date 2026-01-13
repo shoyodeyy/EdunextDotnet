@@ -32,4 +32,21 @@ public class TableRepository : ITableRepository
     {
         _context.Tables.Update(table);
     }
+
+    public void Delete(Table table)
+    {
+        _context.Tables.Remove(table);
+    }
+
+    public async Task<IEnumerable<Table>> GetAllAsync(bool? isActive = null)
+    {
+        var query = _context.Tables.AsQueryable();
+
+        if (isActive.HasValue)
+        {
+            query = query.Where(t => t.IsActive == isActive.Value);
+        }
+
+        return await query.OrderBy(t => t.Code).ToListAsync();
+    }
 }
