@@ -25,6 +25,10 @@ public class Order : BaseEntity
 
     public void AddItem(OrderItem item)
     {
+        if (item.OrderId != Id)
+        {
+            throw new InvalidOperationException("OrderItem does not belong to this Order");
+        }
         _items.Add(item);
     }
 

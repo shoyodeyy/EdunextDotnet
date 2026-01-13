@@ -18,7 +18,6 @@ public class SubmitOrderHandler : IRequestHandler<SubmitOrderCommand, Unit>
         if (order == null)
             throw new KeyNotFoundException($"Order {request.OrderId} not found");
 
-        // ✅ Gọi domain method
         order.Submit();
 
         _unitOfWork.Orders.Update(order);
