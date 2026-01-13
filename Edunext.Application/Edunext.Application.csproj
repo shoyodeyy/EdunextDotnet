@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MediatR" Version="12.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Features\Menu\Commands\" />
+      <Folder Include="Features\Tables\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Edunext.Core\Edunext.Core.csproj" />
+    </ItemGroup>
+
+</Project>

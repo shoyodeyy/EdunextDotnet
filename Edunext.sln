@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edunext.API", "Edunext.API\Edunext.API.csproj", "{6A24DA9C-BF9E-4177-94A9-2FB721BEAB75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edunext.Core", "Edunext.Core\Edunext.Core.csproj", "{ACBAADA9-C597-4BB4-83DD-06A93FC75442}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edunext.Application", "Edunext.Application\Edunext.Application.csproj", "{32BBFB00-C2DA-4FD0-8D46-24AEEC559EE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edunext.Infrastructure", "Edunext.Infrastructure\Edunext.Infrastructure.csproj", "{7736D58E-C148-474C-90C3-3E553BBC19DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A24DA9C-BF9E-4177-94A9-2FB721BEAB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A24DA9C-BF9E-4177-94A9-2FB721BEAB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A24DA9C-BF9E-4177-94A9-2FB721BEAB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A24DA9C-BF9E-4177-94A9-2FB721BEAB75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACBAADA9-C597-4BB4-83DD-06A93FC75442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACBAADA9-C597-4BB4-83DD-06A93FC75442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACBAADA9-C597-4BB4-83DD-06A93FC75442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACBAADA9-C597-4BB4-83DD-06A93FC75442}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32BBFB00-C2DA-4FD0-8D46-24AEEC559EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32BBFB00-C2DA-4FD0-8D46-24AEEC559EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32BBFB00-C2DA-4FD0-8D46-24AEEC559EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32BBFB00-C2DA-4FD0-8D46-24AEEC559EE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7736D58E-C148-474C-90C3-3E553BBC19DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7736D58E-C148-474C-90C3-3E553BBC19DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7736D58E-C148-474C-90C3-3E553BBC19DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7736D58E-C148-474C-90C3-3E553BBC19DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
