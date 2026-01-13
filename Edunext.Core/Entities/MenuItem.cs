@@ -24,5 +24,5 @@ public class MenuItem : BaseEntity
 
     public void MarkOutOfStock() { IsAvailable = false; }
 
-    public void MarkAvaiable() { IsAvailable = true; }
+    public void MarkAvailable() { IsAvailable = true; }
 }
