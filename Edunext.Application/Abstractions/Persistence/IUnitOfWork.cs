@@ -2,7 +2,10 @@ namespace Edunext.Application.Abstractions.Persistence;
 
 public interface IUnitOfWork : IDisposable
 {
-    IOrderRepository Orders { get; }
+    ITableRepository Tables { get; }
     IMenuRepository Menus { get; }
+    IOrderRepository Orders { get; }
     
+    // trả về số bản bị ảnh hưởng
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

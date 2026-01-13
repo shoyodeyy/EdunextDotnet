@@ -5,7 +5,7 @@ namespace Edunext.Core.Entities;
 public class MenuItem : BaseEntity
 {
     public Guid CategoryId { get; private set;  }
-    public string Name { get; private set; } = default;
+    public string Name { get; private set; } = default!;
     public string? Description { get; private set; }
     public decimal Price { get; private set; }
     public string? ImageUrl { get; private set; }
@@ -24,5 +24,5 @@ public class MenuItem : BaseEntity
 
     public void MarkOutOfStock() { IsAvailable = false; }
 
-    public void MarkAvaiable() { IsAvailable = true; }
+    public void MarkAvailable() { IsAvailable = true; }
 }
