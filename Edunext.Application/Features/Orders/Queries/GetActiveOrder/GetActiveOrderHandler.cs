@@ -1,7 +1,8 @@
 ﻿
 
+using Edunext.Application.Abstractions.Persistence;
 using Edunext.Application.DTOs.Order;
-using Edunext.Core.Interfaces;
+
 using MediatR;
 
 namespace Edunext.Application.Features.Orders.Queries.GetActiveOrder;

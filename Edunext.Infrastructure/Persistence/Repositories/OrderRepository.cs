@@ -27,4 +27,9 @@ public class OrderRepository : IOrderRepository
     {
         _context.Orders.Update(order);
     }
+
+    public Task<Order?> GetActiveByTableAsync(Guid tableId)
+    {
+        throw new NotImplementedException();
+    }
 }
