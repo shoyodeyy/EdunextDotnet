@@ -36,4 +36,9 @@ public class OrderRepository : IOrderRepository
             .OrderByDescending(o => o.CreateAt)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<IEnumerable<Order?>> GetAllOrderAsync()
+    {
+        return await _context.Orders.ToListAsync();
+    }
 }

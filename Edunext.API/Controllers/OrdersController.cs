@@ -3,6 +3,8 @@ using Edunext.Application.Features.Orders.Commands.AddItemToOrder;
 using Edunext.Application.Features.Orders.Commands.CompleteOrder;
 using Edunext.Application.Features.Orders.Commands.CreateOrder;
 using Edunext.Application.Features.Orders.Commands.SubmitOrder;
+using Edunext.Application.Features.Orders.Queries.GetActiveOrder;
+using Edunext.Application.Features.Orders.Queries.GetAllOrder;
 using Edunext.Application.Features.Orders.Queries.GetOrderById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -69,7 +71,26 @@ public class OrdersController : ControllerBase
         return Ok(order);
     }
 
-    [HttpGet]
+    [HttpGet("table/{tableId}/active")]
+    public async Task<ActionResult<OrderDto>> GetActiveOrder(Guid tableId)
+    {
+        var query = new GetActiveOrderQuery(tableId);
+        var order = await _mediator.Send(query);
+        if (order == null)
+        {
+            return NotFound( new { message = $"No active order found for table {tableId}"});
+        }
+        return Ok(order);
+    }
+
+    [HttpGet("AllOrder")]
+    public async Task<ActionResult<List<OrderDto>>> GetAllOrder()
+    {
+        var query = new GetAllOrderQuery();
+        var orders = await _mediator.Send(query);
+        return Ok(orders);
+    }
+
 }
 
 public record AddItemRequest(Guid MenuItemId, int Quantity, string? Note);
