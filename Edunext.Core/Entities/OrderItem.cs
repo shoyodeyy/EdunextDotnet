@@ -4,6 +4,7 @@ namespace Edunext.Core.Entities;
 
 public class OrderItem : BaseEntity
 {
+    public Guid OrderId { get; private set; }
     public Guid MenuItemId { get; private set; }
     public string MenuItemName { get; private set; } = default!;
     public decimal UnitPrice { get; private set; }
@@ -17,8 +18,9 @@ public class OrderItem : BaseEntity
     {
     }
 
-    public OrderItem(Guid menuItemId, string name, decimal price, int quantity, string? note)
+    public OrderItem(Guid orderId, Guid menuItemId, string name, decimal price, int quantity, string? note)
     {
+        OrderId = orderId;
         MenuItemId = menuItemId;
         MenuItemName = name;
         UnitPrice = price;
@@ -32,7 +34,7 @@ public class OrderItem : BaseEntity
         {
             throw new ArgumentOutOfRangeException(nameof(quantity), "Quantity must be greater than zero.");
         }
-        
+
         Quantity = quantity;
     }
 }

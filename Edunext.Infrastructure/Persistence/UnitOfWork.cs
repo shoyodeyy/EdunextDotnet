@@ -9,6 +9,7 @@ public class UnitOfWork : IUnitOfWork
     private ITableRepository? _tableRepository;
     private IMenuRepository? _menuRepository;
     private IOrderRepository? _orderRepository;
+    private IOrderItemRepository? _orderItemRepository;
 
     public UnitOfWork(AppDbContext context)
     {
@@ -18,6 +19,7 @@ public class UnitOfWork : IUnitOfWork
     public ITableRepository Tables => _tableRepository ??= new TableRepository(_context);
     public IMenuRepository Menus => _menuRepository ??= new MenuRepository(_context);
     public IOrderRepository Orders => _orderRepository ??= new OrderRepository(_context);
+    public IOrderItemRepository OrderItems => _orderItemRepository ??= new OrderItemRepository(_context);
 
     public void Dispose()
     {

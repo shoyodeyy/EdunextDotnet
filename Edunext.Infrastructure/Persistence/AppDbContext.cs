@@ -5,7 +5,35 @@ namespace Edunext.Infrastructure.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    // public DbSet<EmployeeEntity> Employees { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        
+        modelBuilder.Entity<OrderItem>(entity =>
+        {
+            entity.HasOne<Order>()
+                .WithMany(o => o.Items)
+                .HasForeignKey(oi => oi.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<MenuItem>(entity =>
+        {
+            entity.HasOne<MenuCategory>()
+                .WithMany()
+                .HasForeignKey(m => m.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.HasOne<Table>()
+                .WithMany()
+                .HasForeignKey(o => o.TableId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+    }
+
     public DbSet<Table> Tables { get; set; }
     public DbSet<MenuItem> MenuItems { get; set; }
     public DbSet<MenuCategory> MenuCategories { get; set; }
