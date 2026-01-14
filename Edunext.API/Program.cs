@@ -27,6 +27,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseCors("FrontendPolicy");
+
 app.UseExceptionHandler(b =>
 {
     b.Run(async context =>
