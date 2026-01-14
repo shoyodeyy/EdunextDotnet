@@ -16,7 +16,7 @@ public class MenuController :ControllerBase
         _mediator = mediator; 
     }
 
-    [HttpGet]
+    [HttpGet("category")]
     public async Task<IActionResult> GetMenu(
         [FromQuery] Guid? categoryId)
     {
@@ -33,6 +33,13 @@ public class MenuController :ControllerBase
 
         if (result == null) return NotFound();
 
+        return Ok(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllMenu()
+    {
+        var result = await _mediator.Send(new GetAllMenuQuery());
         return Ok(result);
     }
 }
