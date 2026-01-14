@@ -1,6 +1,8 @@
 using Edunext.API;
 using Edunext.Application.Common.Exceptions;
 using Microsoft.AspNetCore.Diagnostics;
+using Edunext.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,25 @@ app.UseExceptionHandler(b =>
         });
     });
 });
+
+// Apply pending migrations automatically (only in Development)
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        try
+        {
+            dbContext.Database.Migrate();
+        }
+        catch (Exception ex)
+        {
+            // Log error but don't crash the app
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occurred while migrating the database.");
+        }
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
