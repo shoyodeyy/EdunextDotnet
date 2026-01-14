@@ -68,8 +68,6 @@ public class OrdersController : ControllerBase
 
         return Ok(order);
     }
-
-    [HttpGet]
 }
 
 public record AddItemRequest(Guid MenuItemId, int Quantity, string? Note);
