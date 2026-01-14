@@ -27,7 +27,7 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult<Guid>> CreateOrder([FromBody] CreateOrderCommand command)
     {
         var orderId = await _mediator.Send(command);
-        return CreatedAtAction(nameof(GetOrder), new { id = orderId }, orderId);
+        return CreatedAtAction(nameof(GetOrder), new { orderId = orderId }, orderId);
     }
 
     [HttpPost("{orderId}/items")]

@@ -32,12 +32,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, Guid>
             throw new ValidationException("Table is disabled");
         }
         
-        var activeOrder = await _unitOfWork.Orders.GetActiveByTableAsync(request.TableId);
-        if (activeOrder != null)
-        {
-            throw new ValidationException("This table already has an active order");
-        }
-
         var order = new Order(request.TableId);
 
         await _unitOfWork.Orders.AddAsync(order);

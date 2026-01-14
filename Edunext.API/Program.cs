@@ -39,6 +39,17 @@ app.UseExceptionHandler(b =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 // Apply pending migrations automatically (only in Development)
 if (app.Environment.IsDevelopment())
 {

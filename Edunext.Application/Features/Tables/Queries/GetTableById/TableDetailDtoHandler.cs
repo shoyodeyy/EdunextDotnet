@@ -16,8 +16,6 @@ public class TableDetailDtoHandler: IRequestHandler<GetTableByIdQuery, TableDeta
     {
         var table = await _unitOfWork.Tables.GetByIdAsync(request.TableId);
         
-        if (table == null) return null;
-        
-        return new  TableDetailDto(table.Id, table.Code, table.IsActive);
+        return table == null ? null : new TableDetailDto(table.Id, table.Code, table.IsActive);
     }
 }
