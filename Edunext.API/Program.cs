@@ -1,4 +1,6 @@
 using Edunext.API;
+using Edunext.Application.Common.Exceptions;
+using Microsoft.AspNetCore.Diagnostics;
 using Edunext.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +16,39 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAppDI(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseExceptionHandler(b =>
+{
+    b.Run(async context =>
+    {
+        var error = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+        context.Response.ContentType = "application/json";
+
+        context.Response.StatusCode = error switch
+        {
+            ValidationException => StatusCodes.Status400BadRequest,
+            NotFoundException => StatusCodes.Status404NotFound,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        await context.Response.WriteAsJsonAsync(new
+        {
+            message = error?.Message,
+        });
+    });
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 // Apply pending migrations automatically (only in Development)
 if (app.Environment.IsDevelopment())

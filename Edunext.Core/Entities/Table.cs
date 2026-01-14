@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Edunext.Core.Common;
 
 namespace Edunext.Core.Entities;
@@ -16,8 +17,23 @@ public class Table : BaseEntity
         Code = code;
     }
 
+    public void UpdateCode(string code)
+    {
+        if (string.IsNullOrWhiteSpace(code))
+        {
+            throw new ValidationException("Code cannot be empty.");
+        }
+
+        Code = code.Trim();
+    }
+
     public void Disable()
     {
         IsActive = false;
+    }
+
+    public void Enable()
+    {
+        IsActive = true;
     }
 }

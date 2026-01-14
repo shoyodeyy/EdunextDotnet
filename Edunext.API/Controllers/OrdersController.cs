@@ -2,6 +2,7 @@ using Edunext.Application.DTOs.Order;
 using Edunext.Application.Features.Orders.Commands.AddItemToOrder;
 using Edunext.Application.Features.Orders.Commands.CompleteOrder;
 using Edunext.Application.Features.Orders.Commands.CreateOrder;
+using Edunext.Application.Features.Orders.Commands.RemoveOrderItem;
 using Edunext.Application.Features.Orders.Commands.SubmitOrder;
 using Edunext.Application.Features.Orders.Queries.GetActiveOrder;
 using Edunext.Application.Features.Orders.Queries.GetAllOrder;
@@ -26,7 +27,7 @@ public class OrdersController : ControllerBase
     public async Task<ActionResult<Guid>> CreateOrder([FromBody] CreateOrderCommand command)
     {
         var orderId = await _mediator.Send(command);
-        return CreatedAtAction(nameof(GetOrder), new { id = orderId }, orderId);
+        return CreatedAtAction(nameof(GetOrder), new { orderId = orderId }, orderId);
     }
 
     [HttpPost("{orderId}/items")]
@@ -71,6 +72,12 @@ public class OrdersController : ControllerBase
         return Ok(order);
     }
 
+    [HttpDelete("{orderId}/items/{orderItemId}")]
+    public async Task<ActionResult> RemoveItem(Guid orderId, Guid orderItemId)
+    {
+        await _mediator.Send(new RemoveOrderItemCommand(orderId, orderItemId));
+        return NoContent();
+    }
     [HttpGet("table/{tableId}/active")]
     public async Task<ActionResult<OrderDto>> GetActiveOrder(Guid tableId)
     {

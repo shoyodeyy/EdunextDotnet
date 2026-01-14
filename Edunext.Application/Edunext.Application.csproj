@@ -14,9 +14,6 @@
 
     <ItemGroup>
       <Folder Include="Features\Menu\Commands\" />
-      <Folder Include="Features\Tables\Commands\" />
-      <Folder Include="Features\Tables\Queries\" />
-      <Folder Include="Interfaces\" />
     </ItemGroup>
 
     <ItemGroup>

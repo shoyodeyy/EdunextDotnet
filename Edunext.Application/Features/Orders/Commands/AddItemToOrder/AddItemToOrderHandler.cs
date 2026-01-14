@@ -1,5 +1,7 @@
 using Edunext.Application.Abstractions.Persistence;
+using Edunext.Application.Common.Exceptions;
 using Edunext.Core.Entities;
+using Edunext.Core.Enums;
 using MediatR;
 
 namespace Edunext.Application.Features.Orders.Commands.AddItemToOrder;
@@ -17,14 +19,24 @@ public class AddItemToOrderHandler : IRequestHandler<AddItemToOrderCommand, Unit
     {
         var order = await _unitOfWork.Orders.GetByIdAsync(request.OrderId);
         if (order == null)
-            throw new KeyNotFoundException($"Order {request.OrderId} not found");
+            throw new NotFoundException($"Order {request.OrderId} not found");
+
+        if (order.Status == OrderStatus.Paid)
+        {
+            throw new ValidationException("Cannot modify a paid order");
+        }
 
         var menuItem = await _unitOfWork.Menus.GetByIdAsync(request.MenuItemId);
         if (menuItem == null)
-            throw new KeyNotFoundException($"Menu item {request.MenuItemId} not found");
+            throw new NotFoundException($"Menu item {request.MenuItemId} not found");
 
         if (!menuItem.IsAvailable)
-            throw new InvalidOperationException("Menu item is not available");
+            throw new ValidationException("Menu item is out of stock");
+
+        if (request.Quantity <= 0)
+        {
+            throw new ValidationException("Quantity must be greater than 0");
+        }
 
         var orderItem = new OrderItem(
             order.Id,
@@ -38,6 +50,7 @@ public class AddItemToOrderHandler : IRequestHandler<AddItemToOrderCommand, Unit
         order.AddItem(orderItem);
         
         await _unitOfWork.OrderItems.AddAsync(orderItem);
+        _unitOfWork.Orders.Update(order);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
