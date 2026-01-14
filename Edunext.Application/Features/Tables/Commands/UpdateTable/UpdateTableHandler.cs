@@ -1,4 +1,5 @@
 using Edunext.Application.Abstractions.Persistence;
+using Edunext.Application.Common.Exceptions;
 using Edunext.Application.Features.Tables.Commands.CreateTable;
 using Edunext.Core.Entities;
 using MediatR;
@@ -19,19 +20,18 @@ public class UpdateTableHandler:IRequestHandler<UpdateTableCommand, Unit>
         var table = await _unitOfWork.Tables.GetByIdAsync(request.TableId);
         if (table == null)
         {
-            throw new KeyNotFoundException($"Table '{request.TableId}' not found.");
+            throw new NotFoundException($"Table '{request.TableId}' not found.");
         }
         
         var existingTable = await _unitOfWork.Tables.GetByCodeAsync(request.Code);
         if (existingTable != null && existingTable.Id != request.TableId)
         {
-            throw new InvalidOperationException($"Table with code '{request.Code}' already exists.");
+            throw new ValidationException($"Table code '{request.Code}' already exists.");
         }
         
-        table?.UpdateCode(request.Code);
+        table.UpdateCode(request.Code);
 
-        if (table != null) _unitOfWork.Tables.Update(table);
-
+        _unitOfWork.Tables.Update(table);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         
         return Unit.Value;

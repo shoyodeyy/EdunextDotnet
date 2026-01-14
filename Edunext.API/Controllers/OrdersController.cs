@@ -2,6 +2,7 @@ using Edunext.Application.DTOs.Order;
 using Edunext.Application.Features.Orders.Commands.AddItemToOrder;
 using Edunext.Application.Features.Orders.Commands.CompleteOrder;
 using Edunext.Application.Features.Orders.Commands.CreateOrder;
+using Edunext.Application.Features.Orders.Commands.RemoveOrderItem;
 using Edunext.Application.Features.Orders.Commands.SubmitOrder;
 using Edunext.Application.Features.Orders.Queries.GetOrderById;
 using MediatR;
@@ -67,6 +68,13 @@ public class OrdersController : ControllerBase
         }
 
         return Ok(order);
+    }
+
+    [HttpDelete("{orderId}/items/{orderItemId}")]
+    public async Task<ActionResult> RemoveItem(Guid orderId, Guid orderItemId)
+    {
+        await _mediator.Send(new RemoveOrderItemCommand(orderId, orderItemId));
+        return NoContent();
     }
 }
 

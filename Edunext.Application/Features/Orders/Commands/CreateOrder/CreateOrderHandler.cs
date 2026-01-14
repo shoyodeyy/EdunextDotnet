@@ -1,4 +1,5 @@
 using Edunext.Application.Abstractions.Persistence;
+using Edunext.Application.Common.Exceptions;
 using Edunext.Core.Entities;
 using MediatR;
 
@@ -17,24 +18,29 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, Guid>
     {
         if (request.TableId == Guid.Empty)
         {
-            throw new ArgumentException("TableId cannot be empty", nameof(request.TableId));
+            throw new ValidationException("Table cannot be empty");
         }
         
         var table = await _unitOfWork.Tables.GetByIdAsync(request.TableId);
         if (table == null)
         {
-            throw new KeyNotFoundException($"Table with ID {request.TableId} not found");
+            throw new NotFoundException($"Table {request.TableId} not found");
         }
 
         if (!table.IsActive)
         {
-            throw new InvalidOperationException("Cannot create order for inactive table");
+            throw new ValidationException("Table is disabled");
+        }
+        
+        var activeOrder = await _unitOfWork.Orders.GetActiveByTableAsync(request.TableId);
+        if (activeOrder != null)
+        {
+            throw new ValidationException("This table already has an active order");
         }
 
         var order = new Order(request.TableId);
 
         await _unitOfWork.Orders.AddAsync(order);
-
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return order.Id;

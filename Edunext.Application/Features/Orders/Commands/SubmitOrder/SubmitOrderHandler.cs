@@ -1,4 +1,5 @@
 using Edunext.Application.Abstractions.Persistence;
+using Edunext.Application.Common.Exceptions;
 using MediatR;
 
 namespace Edunext.Application.Features.Orders.Commands.SubmitOrder;
@@ -16,7 +17,12 @@ public class SubmitOrderHandler : IRequestHandler<SubmitOrderCommand, Unit>
     {
         var order = await _unitOfWork.Orders.GetByIdAsync(request.OrderId);
         if (order == null)
-            throw new KeyNotFoundException($"Order {request.OrderId} not found");
+            throw new NotFoundException($"Order {request.OrderId} not found");
+
+        if (!order.Items.Any())
+        {
+            throw new ValidationException("Cannot submit empty order");
+        }
 
         order.Submit();
 

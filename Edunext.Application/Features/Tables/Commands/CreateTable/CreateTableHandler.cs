@@ -1,4 +1,5 @@
 using Edunext.Application.Abstractions.Persistence;
+using Edunext.Application.Common.Exceptions;
 using Edunext.Core.Entities;
 using MediatR;
 
@@ -15,13 +16,19 @@ public class CreateTableHandler:IRequestHandler<CreateTableCommand, Guid>
     
     public async Task<Guid> Handle(CreateTableCommand request, CancellationToken cancellationToken)
     {
+        if (string.IsNullOrWhiteSpace(request.Code))
+        {
+            throw new ValidationException("Table code is required"); 
+        }
+        
         var existingTable = await _unitOfWork.Tables.GetByCodeAsync(request.Code);
         if (existingTable != null)
         {
-            throw new InvalidOperationException($"Table with code '{request.Code}' already exists.");
+            throw new ValidationException($"Table code '{request.Code}' already exists.");
         }
 
         var table = new Table(request.Code);
+        
         await _unitOfWork.Tables.AddAsync(table);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

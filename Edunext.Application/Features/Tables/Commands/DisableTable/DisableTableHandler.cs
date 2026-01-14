@@ -1,4 +1,5 @@
 using Edunext.Application.Abstractions.Persistence;
+using Edunext.Application.Common.Exceptions;
 using MediatR;
 
 namespace Edunext.Application.Features.Tables.Commands.DisableTable;
@@ -18,7 +19,7 @@ public class DisableTableHandler : IRequestHandler<DisableTableCommand, Unit>
 
         if (table == null)
         {
-            throw new KeyNotFoundException($"Table {request.TableId} not found");
+            throw new NotFoundException($"Table {request.TableId} not found");
         }
 
         table.Disable();

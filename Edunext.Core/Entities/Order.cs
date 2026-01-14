@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Edunext.Core.Common;
 using Edunext.Core.Enums;
 
@@ -27,25 +28,32 @@ public class Order : BaseEntity
     {
         if (item.OrderId != Id)
         {
-            throw new InvalidOperationException("OrderItem does not belong to this Order");
+            throw new ValidationException("OrderItem does not belong to this Order");
         }
         _items.Add(item);
     }
 
     public void RemoveItem(Guid orderItemId)
     {
-        var item = _items.FirstOrDefault(x => x.Id == orderItemId);
-        if (item != null)
+        if (Status != OrderStatus.Cooking)
         {
-            _items.Remove(item);
+            throw new ValidationException("Cannot modify order once it is cooking");
         }
+        
+        var item = _items.FirstOrDefault(x => x.Id == orderItemId);
+        if (item == null)
+        {
+            throw new ValidationException("Order item not found");
+        }
+        
+        _items.Remove(item);
     }
 
     public void Submit()
     {
         if (Status != OrderStatus.Pending)
         {
-            throw new InvalidOperationException("Cannot submit a pending order.");
+            throw new ValidationException("Cannot submit a pending order.");
         } 
         
         Status = OrderStatus.Cooking;
