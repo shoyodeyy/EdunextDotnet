@@ -37,8 +37,10 @@ public class OrderRepository : IOrderRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Order?>> GetAllOrderAsync()
+    public async Task<IEnumerable<Order>> GetAllOrderAsync()
     {
-        return await _context.Orders.ToListAsync();
+        return await _context.Orders
+            .Include(o => o.Items)
+            .ToListAsync();
     }
 }

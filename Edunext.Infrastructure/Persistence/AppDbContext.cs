@@ -19,10 +19,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
         modelBuilder.Entity<MenuItem>(entity =>
         {
-            entity.HasOne<MenuCategory>()
+            entity.HasOne(m => m.Category)
                 .WithMany()
                 .HasForeignKey(m => m.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+            
+            // Ignore IsAvailable vì nó là computed property
+            entity.Ignore(m => m.IsAvailable);
         });
 
         modelBuilder.Entity<Order>(entity =>
