@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Edunext.Application\Edunext.Application.csproj" />
+      <ProjectReference Include="..\Edunext.Core\Edunext.Core.csproj" />
     </ItemGroup>
 
 </Project>

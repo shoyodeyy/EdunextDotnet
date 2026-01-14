@@ -1,7 +1,9 @@
+using Edunext.Application.DTOs.Order;
 using Edunext.Application.Features.Orders.Commands.AddItemToOrder;
 using Edunext.Application.Features.Orders.Commands.CompleteOrder;
 using Edunext.Application.Features.Orders.Commands.CreateOrder;
 using Edunext.Application.Features.Orders.Commands.SubmitOrder;
+using Edunext.Application.Features.Orders.Queries.GetOrderById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,12 +55,21 @@ public class OrdersController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult> GetOrder(Guid id)
+    [HttpGet("{orderId}")]
+    public async Task<ActionResult<OrderDto>> GetOrder(Guid orderId)
     {
-        // TODO: Implement Query
-        return Ok();
+        var query = new GetOrderByIdQuery(orderId);
+        var order = await _mediator.Send(query);
+
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(order);
     }
+
+    [HttpGet]
 }
 
 public record AddItemRequest(Guid MenuItemId, int Quantity, string? Note);
