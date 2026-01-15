@@ -8,9 +8,10 @@ public class Table : BaseEntity
     public string Code { get; private set; } = default!;
     public bool IsActive { get; private set; } = true;
 
-    private Table()
-    {
-    }
+    private readonly List<Order> _orders = new();
+    public IReadOnlyCollection<Order> Orders => _orders;
+
+    private Table() { }
 
     public Table(string code)
     {

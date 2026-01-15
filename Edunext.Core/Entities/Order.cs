@@ -6,18 +6,18 @@ namespace Edunext.Core.Entities;
 
 public class Order : BaseEntity
 {
-    public Guid TableId { get; private set; }
+    public Guid TableId { get; private set; }   
+    public Table Table { get; private set; }
+    
     public OrderStatus Status { get; private set; } = OrderStatus.Pending;
     public DateTime CreateAt { get; private set; } = DateTime.UtcNow;
+    public DateTime? CompleteAt { get; private set; }
 
     private readonly List<OrderItem> _items = new();
-    public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
+    public IReadOnlyCollection<OrderItem> Items => _items;
 
     public decimal TotalPrice => _items.Sum(x => x.TotalPrice);
-
-    private Order()
-    {
-    }
+    private Order() { }
 
     public Order(Guid tableId)
     {
@@ -62,6 +62,7 @@ public class Order : BaseEntity
     public void Complete()
     {
         Status = OrderStatus.Done;
+        CompleteAt = DateTime.UtcNow;
     }
 
     public void MarkPaid()
