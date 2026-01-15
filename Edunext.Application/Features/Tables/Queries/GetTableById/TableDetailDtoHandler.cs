@@ -1,4 +1,5 @@
 using Edunext.Application.Abstractions.Persistence;
+using Edunext.Application.DTOs.Table;
 using MediatR;
 
 namespace Edunext.Application.Features.Tables.Queries.GetTableById;

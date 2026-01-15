@@ -1,3 +1,4 @@
+using Edunext.Application.DTOs.Table;
 using Edunext.Application.Features.Tables.Commands;
 using Edunext.Application.Features.Tables.Commands.CreateTable;
 using Edunext.Application.Features.Tables.Commands.DisableTable;
