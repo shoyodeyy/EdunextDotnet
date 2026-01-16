@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Edunext.Application.Features.Menu.Queries.GetMenuDetail;
 
-internal class GetMenuDetailHandler
+public class GetMenuDetailHandler
     : IRequestHandler<GetMenuDetailQuery, MenuItemDto?>
 {
     private readonly IMenuRepository _menuRepository;
@@ -28,7 +28,7 @@ internal class GetMenuDetailHandler
 
         return new MenuItemDto
         {
-            MenuId = menu.Id,
+            Id = menu.Id,
             Name = menu.Name,
             Description = menu.Description,
             Price = menu.Price,

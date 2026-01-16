@@ -28,7 +28,9 @@ public class GetOrderByIdHandler : IRequestHandler<GetOrderByIdQuery, OrderDto?>
             Items = order.Items.Select(i => new OrderItemDto
             {
                 OrderItemId = i.Id,
+                MenuItemId = i.MenuItemId,
                 Name = i.MenuItemName,
+                MenuItemName = i.MenuItemName,
                 UnitPrice = i.UnitPrice,
                 Quantity = i.Quantity,
                 TotalPrice = i.TotalPrice,
