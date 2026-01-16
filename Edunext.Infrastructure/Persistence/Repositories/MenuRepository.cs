@@ -13,11 +13,11 @@ public class MenuRepository : IMenuRepository
         _context = context;
     }
 
-    public async Task<MenuItem?> GetByIdAsync(Guid menuId)
+    public async Task<MenuItem?> GetByIdAsync(Guid menuId, CancellationToken ct = default)
     {
         return await _context.MenuItems
             .Include(x => x.Category)
-            .FirstOrDefaultAsync(x => x.Id == menuId);
+            .FirstOrDefaultAsync(x => x.Id == menuId, ct);
     }
 
     public async Task AddAsync(MenuItem menuItem)
@@ -25,7 +25,7 @@ public class MenuRepository : IMenuRepository
         await _context.MenuItems.AddAsync(menuItem);
     }
 
-    public async Task<IEnumerable<MenuItem>> GetAllAvailableAsync()
+    public async Task<IEnumerable<MenuItem>> GetAllAvailableAsync(CancellationToken ct = default)
     {
         return await _context.MenuItems
             .Include(x => x.Category)
@@ -35,7 +35,7 @@ public class MenuRepository : IMenuRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<MenuItem>> GetByCategoryIdAsync(Guid categoryId)
+    public async Task<IEnumerable<MenuItem>> GetByCategoryIdAsync(Guid categoryId, CancellationToken ct = default)
     {
         return await _context.MenuItems
             .Include(x => x.Category)
@@ -46,9 +46,28 @@ public class MenuRepository : IMenuRepository
             .ToListAsync();
     }
 
+    public async Task AddAsync(MenuItem menuItem, CancellationToken ct = default)
+    {
+        await _context.MenuItems.AddAsync(menuItem, ct);
+    }
+
 
     public void Update(MenuItem menuItem)
     {
         _context.MenuItems.Update(menuItem);
+    }
+
+    public async Task<bool> HasActiveOrdersAsync(Guid menuItemId, CancellationToken ct = default)
+    {
+        return await _context.OrderItems
+            .Include(oi => oi.Order)
+            .AnyAsync(oi => oi.MenuItemId == menuItemId
+                            && oi.Order.Status != Core.Enums.OrderStatus.Paid, ct);
+                
+    }
+
+    public void Delete(MenuItem menuItem)
+    {
+        _context.MenuItems.Remove(menuItem);
     }
 }

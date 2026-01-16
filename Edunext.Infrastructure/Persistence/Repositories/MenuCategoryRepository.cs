@@ -13,11 +13,16 @@ public class MenuCategoryRepository : IMenuCategoryRepository
         _context = context; 
     }
 
-    public async Task<IEnumerable<MenuCategory>> GetAllActiveAsync()
+    public async Task<IEnumerable<MenuCategory>> GetAllActiveAsync(CancellationToken ct = default)
     {
         return await _context.MenuCategories
             .Where(c => c.IsActive)
             .OrderBy(c => c.Name)
-            .ToListAsync();
+            .ToListAsync(ct);
+    }
+
+    public async Task<MenuCategory?> GetByIdAsync(Guid id, CancellationToken ct = default)
+    {
+        return await _context.MenuCategories.FirstOrDefaultAsync(c => c.Id == id, ct);
     }
 }

@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
     private IMenuRepository? _menuRepository;
     private IOrderRepository? _orderRepository;
     private IOrderItemRepository? _orderItemRepository;
+    private IMenuCategoryRepository? _menuCategoryRepository;
 
     public UnitOfWork(AppDbContext context)
     {
@@ -30,4 +31,7 @@ public class UnitOfWork : IUnitOfWork
     {
         return await _context.SaveChangesAsync(cancellationToken);
     }
-}
+
+    public IMenuCategoryRepository MenuCategories
+        => _menuCategoryRepository ??= new MenuCategoryRepository(_context);
+}   

@@ -4,6 +4,7 @@ public interface IUnitOfWork : IDisposable
 {
     ITableRepository Tables { get; }
     IMenuRepository Menus { get; }
+    IMenuCategoryRepository MenuCategories { get; } 
     IOrderRepository Orders { get; }
     IOrderItemRepository OrderItems { get; }
     

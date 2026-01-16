@@ -78,6 +78,9 @@ namespace Edunext.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("CompleteAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
@@ -121,6 +124,8 @@ namespace Edunext.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MenuItemId");
+
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderItems");
@@ -157,25 +162,42 @@ namespace Edunext.Infrastructure.Migrations
 
             modelBuilder.Entity("Edunext.Core.Entities.Order", b =>
                 {
-                    b.HasOne("Edunext.Core.Entities.Table", null)
-                        .WithMany()
+                    b.HasOne("Edunext.Core.Entities.Table", "Table")
+                        .WithMany("Orders")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Table");
                 });
 
             modelBuilder.Entity("Edunext.Core.Entities.OrderItem", b =>
                 {
-                    b.HasOne("Edunext.Core.Entities.Order", null)
+                    b.HasOne("Edunext.Core.Entities.MenuItem", "MenuItem")
+                        .WithMany()
+                        .HasForeignKey("MenuItemId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Edunext.Core.Entities.Order", "Order")
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MenuItem");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Edunext.Core.Entities.Order", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("Edunext.Core.Entities.Table", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }
